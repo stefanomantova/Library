@@ -1,3 +1,6 @@
+let libraryStorage = []
+let libraryTableHTML = []
+
 function Book(title, author, pagesQuantity, isRead){
     this.title = title
     this.author = author
@@ -26,10 +29,10 @@ function Book(title, author, pagesQuantity, isRead){
     addBookDiv.removeChild(document.getElementById('callFormButton'))
     let newBookForm = document.createElement('form')
     addBookDiv.appendChild(newBookForm)
-    let bookName = document.createElement('input')
-    bookName.type = 'text'
-    newBookForm.innerHTML = `Book Name `
-    newBookForm.appendChild(bookName)
+    let bookTitle = document.createElement('input')
+    bookTitle.type = 'text'
+    newBookForm.innerHTML = `Book Title `
+    newBookForm.appendChild(bookTitle)
     let bookAuthor = document.createElement('input')
     bookAuthor.type = 'text'
     newBookForm.innerHTML += '</br> Author '
@@ -44,10 +47,34 @@ function Book(title, author, pagesQuantity, isRead){
     newBookForm.appendChild(readCheck)
     let addBookButton = document.createElement('input')
     addBookButton.type = 'button'
-    addBookButton.value = 'Add Book'
+    addBookButton.value = 'Add Book to List'
     let br = document.createElement("br")
     newBookForm.appendChild(br)
     newBookForm.appendChild(addBookButton)
-    
+    addBookButton.addEventListener('click',() =>{ addBookToList(bookTitle.value, bookAuthor.value, numberPages.value, readCheck)
+    })
+    }
+
+    function addBookToList(title, author, pages, isRead){
+      
+        let arrayScan = 0
+     while(libraryStorage[arrayScan]!=undefined){
+        arrayScan++
+    }
+    libraryStorage[arrayScan] = new Book(title, author, pages, isRead)
+    let tableBody = document.getElementById('table').getElementsByTagName('tbody')[0]
+    let newRow = document.createElement('tr')
+    let newCellTitle = document.createElement('td')
+    let newCellAuthor = document.createElement('td')
+    let newCellPages = document.createElement('td')
+    let newCellIsRead = document.createElement('td')
+
+    newCellTitle.innerHTML = `${libraryStorage[arrayScan].title}`
+
+    tableBody.appendChild(newRow)
+    newRow.appendChild(newCellTitle)
+    newRow.appendChild(newCellAuthor)
+    newRow.appendChild(newCellPages)
+    newRow.appendChild(newCellIsRead)
 
     }
