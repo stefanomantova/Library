@@ -1,5 +1,7 @@
 let libraryStorage = []
 let libraryTableHTML = []
+let toggleForm = document.getElementById("addBookForm")
+let callFormButton = document.getElementById("callFormButton")
 
 function Book(title, author, pagesQuantity, isRead){
     this.title = title
@@ -24,43 +26,38 @@ function Book(title, author, pagesQuantity, isRead){
     alert(b1.info())
     }
 
-    function createForm(){
-    let addBookDiv = document.getElementById('addBook')
-    addBookDiv.removeChild(document.getElementById('callFormButton'))
-    let newBookForm = document.createElement('form')
-    addBookDiv.appendChild(newBookForm)
-    let bookTitle = document.createElement('input')
-    bookTitle.type = 'text'
-    newBookForm.innerHTML = `Book Title `
-    newBookForm.appendChild(bookTitle)
-    let bookAuthor = document.createElement('input')
-    bookAuthor.type = 'text'
-    newBookForm.innerHTML += '</br> Author '
-    newBookForm.appendChild(bookAuthor)
-    let numberPages = document.createElement('input')
-    numberPages.type = 'number'
-    newBookForm.innerHTML += '</br> Number of pages '
-    newBookForm.appendChild(numberPages)
-    let readCheck = document.createElement('input')
-    readCheck.type = 'checkbox'
-    newBookForm.innerHTML += '</br> Already read? '
-    newBookForm.appendChild(readCheck)
-    let addBookButton = document.createElement('input')
-    addBookButton.type = 'button'
-    addBookButton.value = 'Add Book to List'
-    let br = document.createElement("br")
-    newBookForm.appendChild(br)
-    newBookForm.appendChild(addBookButton)
-    addBookButton.addEventListener('click',() =>{ addBookToList(bookTitle.value, bookAuthor.value, numberPages.value, readCheck)
-    })
+    function showForm(){
+        toggleForm = document.getElementById("addBookForm")
+        if (toggleForm.style.display != "block") {
+            toggleForm.style.display = "block"
+            callFormButton.setAttribute('value','Save and Close')
+            
+        } else {
+            toggleForm.style.display = "none"
+            if(document.forms[0].elements[0].value==""||document.forms[0].elements[1].value =="" || document.forms[0].elements[2].value == ""){
+                alert("Invalid book!")
+            }else if(duplicated(document.forms[0].elements[0].value, document.forms[0].elements[1].value, document.forms[0].elements[2].value)){
+                alert("Book already registered!")
+            }else{
+            addBookToList()
+            }
+            callFormButton.setAttribute('value','Add a new Book')
+        
     }
 
-    function addBookToList(title, author, pages, isRead){
+    }
+      
+    
+    function addBookToList(){
       
         let arrayScan = 0
      while(libraryStorage[arrayScan]!=undefined){
         arrayScan++
     }
+    let title = document.forms[0].elements[0].value
+    let author = document.forms[0].elements[1].value
+    let pages = document.forms[0].elements[2].value
+    let isRead = document.forms[0].elements[3].checked
     libraryStorage[arrayScan] = new Book(title, author, pages, isRead)
     let tableBody = document.getElementById('table').getElementsByTagName('tbody')[0]
     let newRow = document.createElement('tr')
@@ -70,6 +67,14 @@ function Book(title, author, pagesQuantity, isRead){
     let newCellIsRead = document.createElement('td')
 
     newCellTitle.innerHTML = `${libraryStorage[arrayScan].title}`
+    newCellAuthor.innerHTML = `${libraryStorage[arrayScan].author}`
+    newCellPages.innerHTML = `${libraryStorage[arrayScan].pagesQuantity}`
+    if(isRead){
+    newCellIsRead.innerHTML = `Read`
+    }else{
+    newCellIsRead.innerHTML = `Unread`
+    }
+
 
     tableBody.appendChild(newRow)
     newRow.appendChild(newCellTitle)
@@ -77,4 +82,12 @@ function Book(title, author, pagesQuantity, isRead){
     newRow.appendChild(newCellPages)
     newRow.appendChild(newCellIsRead)
 
+    }
+
+    function duplicated(title,author,numberOfPages){
+        for(let scan = 0; scan < libraryStorage.length ; scan++){
+         if(title == libraryStorage[scan].title && author == libraryStorage[scan].author && numberOfPages == libraryStorage[scan].pagesQuantity){
+             return true
+         }
+        }
     }

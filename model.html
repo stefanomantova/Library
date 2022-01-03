@@ -14,8 +14,23 @@
 <h2>Register, edit and mark new books to your personal library anytime!</h2>
    </header> 
    <section>
-<div id="addBook">
-<p id="callFormButton"><input type="button" value="Add a new Book" onclick="createForm()"></p>
+<div id="addBookForm">
+   <p id="form">
+      <form name="inputData">
+         <label for="title">Book Title:</label><br>
+         <input type="text" name="title" id="title"><br><br>
+         <label for="author">Author:</label><br>
+         <input type="text" name="author" id="author"><br><br>
+         <label for="NumberOfPages">Number of Pages:</label><br>
+         <input type="number" name="NumberOfPages" id="NumberOfPages"><br> <br>
+         <label for="isRead">Already Read</label>
+         <input type="checkbox" name="isRead" id="isRead">
+      </form>
+   </p>
+</div>   
+<div id="formButton">
+<input type="button" id="callFormButton" value="Add a new Book" onclick="showForm()">
+<p></p>
 </div>
 <div id="tableBooks">
 <table id="table">
@@ -25,6 +40,7 @@
       <th>Author</th>
       <th>Pages</th>
       <th>Read</th>
+      <th>Actions</th>
    </tr>
 </thead>
 <tbody>

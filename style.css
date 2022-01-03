@@ -38,3 +38,12 @@ table {
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+  #addBookForm{
+    display: none;
+    text-align: center;
+  }
+
+  #formButton{
+    text-align: center;
+  }
