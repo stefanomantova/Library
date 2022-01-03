@@ -8,6 +8,8 @@ function Book(title, author, pagesQuantity, isRead){
     this.author = author
     this.pagesQuantity = pagesQuantity
     this.isRead = isRead
+    this.readButton = readButton
+    this.deleteButton = deleteButton
     this.info = function (){
         let info
         if(isRead){
@@ -17,6 +19,7 @@ function Book(title, author, pagesQuantity, isRead){
         }
         return info
     }
+    
     
     }
     
@@ -65,6 +68,20 @@ function Book(title, author, pagesQuantity, isRead){
     let newCellAuthor = document.createElement('td')
     let newCellPages = document.createElement('td')
     let newCellIsRead = document.createElement('td')
+    //let newCellActions = document.createElement('td')
+    let deleteButton = document.createElement('input')
+    deleteButton.type = 'button'
+    deleteButton.value = 'Delete'
+    deleteButton.id = 'deleteButton'  //tagging delete buttons to correctly identify it later
+    deleteButton.style.backgroundColor = 'red'
+
+    let readButton = document.createElement('input')
+    readButton.type = 'button'
+    readButton.value = 'Read/Unread'
+    readButton.id = 'readButton' //tagging read buttons to correctly identify it later
+    
+    libraryStorage[arrayScan].readButton = readButton
+    libraryStorage[arrayScan].deleteButton = deleteButton
 
     newCellTitle.innerHTML = `${libraryStorage[arrayScan].title}`
     newCellAuthor.innerHTML = `${libraryStorage[arrayScan].author}`
@@ -74,13 +91,14 @@ function Book(title, author, pagesQuantity, isRead){
     }else{
     newCellIsRead.innerHTML = `Unread`
     }
-
-
+    
     tableBody.appendChild(newRow)
     newRow.appendChild(newCellTitle)
     newRow.appendChild(newCellAuthor)
     newRow.appendChild(newCellPages)
     newRow.appendChild(newCellIsRead)
+    newRow.appendChild(readButton)
+    newRow.appendChild(deleteButton)
 
     }
 
@@ -91,3 +109,14 @@ function Book(title, author, pagesQuantity, isRead){
          }
         }
     }
+
+    Book.prototype.delete = function(){
+      
+    }
+
+    /*Book.prototype.markAsRead = function(){
+        document.getElementById('readButton').onclick(){
+
+        }
+        
+    }*/
