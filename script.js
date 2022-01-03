@@ -3,7 +3,7 @@ let libraryTableHTML = []
 let toggleForm = document.getElementById("addBookForm")
 let callFormButton = document.getElementById("callFormButton")
 
-function Book(title, author, pagesQuantity, isRead){
+function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
     this.title = title
     this.author = author
     this.pagesQuantity = pagesQuantity
