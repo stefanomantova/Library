@@ -19,16 +19,28 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
         }
         return info
     }
-    
-    
-    }
-    
-    
-    let b1 = new Book("Harry Potter", "J.K Rowling", 350, true) 
-    function test(){
-    alert(b1.info())
-    }
 
+}
+    
+    function bookHTML(titleHTML, authorHTML, pagesQuantityHTML, isReadHTML, readButtonHTML, deleteButtonHTML, rowID){
+    this.titleHTML = titleHTML
+    this.authorHTML = authorHTML
+    this.pagesQuantityHTML = pagesQuantityHTML 
+    this.isReadHTML = isReadHTML
+    this.readButtonHTML = readButtonHTML
+    this.deleteButtonHTML = deleteButtonHTML
+    this.rowID = rowID
+
+    /*this.readButtonHTML.o = function(){
+        if(this.isReadHTML.innerHTML == `Read`){
+            this.isReadHTML.innerHTML = `Unread`
+        }else{
+            this.isReadHTML.innerHTML = `Read`
+        } 
+    }*/
+    }
+    
+ 
     function showForm(){
         toggleForm = document.getElementById("addBookForm")
         if (toggleForm.style.display != "block") {
@@ -62,43 +74,46 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
     let pages = document.forms[0].elements[2].value
     let isRead = document.forms[0].elements[3].checked
     libraryStorage[arrayScan] = new Book(title, author, pages, isRead)
+    libraryTableHTML[arrayScan] = new bookHTML()
     let tableBody = document.getElementById('table').getElementsByTagName('tbody')[0]
-    let newRow = document.createElement('tr')
-    let newCellTitle = document.createElement('td')
-    let newCellAuthor = document.createElement('td')
-    let newCellPages = document.createElement('td')
-    let newCellIsRead = document.createElement('td')
+    libraryTableHTML[arrayScan].rowID = document.createElement('tr')
+    libraryTableHTML[arrayScan].titleHTML = document.createElement('td')
+    libraryTableHTML[arrayScan].authorHTML = document.createElement('td')
+    libraryTableHTML[arrayScan].pagesQuantityHTML = document.createElement('td')
+    libraryTableHTML[arrayScan].isReadHTML = document.createElement('td')
     //let newCellActions = document.createElement('td')
-    let deleteButton = document.createElement('input')
-    deleteButton.type = 'button'
-    deleteButton.value = 'Delete'
-    deleteButton.id = 'deleteButton'  //tagging delete buttons to correctly identify it later
-    deleteButton.style.backgroundColor = 'red'
+    libraryTableHTML[arrayScan].deleteButtonHTML = document.createElement('input')
+    libraryTableHTML[arrayScan].deleteButtonHTML.type = 'button'
+    libraryTableHTML[arrayScan].deleteButtonHTML.value = 'Delete'
+    libraryTableHTML[arrayScan].deleteButtonHTML.id = 'deleteButton'  //tagging delete buttons to correctly identify it later
+    libraryTableHTML[arrayScan].deleteButtonHTML.style.backgroundColor = 'red'
+    libraryTableHTML[arrayScan].deleteButtonHTML.onclick = function(){deleteBook(arrayScan)}
 
-    let readButton = document.createElement('input')
-    readButton.type = 'button'
-    readButton.value = 'Read/Unread'
-    readButton.id = 'readButton' //tagging read buttons to correctly identify it later
+    libraryTableHTML[arrayScan].readButtonHTML = document.createElement('input')
+    libraryTableHTML[arrayScan].readButtonHTML.type = 'button'
+    libraryTableHTML[arrayScan].readButtonHTML.value = 'Read/Unread'
+    libraryTableHTML[arrayScan].readButtonHTML.id = 'readButton' //tagging read buttons to correctly identify it later
+    libraryTableHTML[arrayScan].readButtonHTML.onclick= function() {markAsRead(arrayScan)}
     
-    libraryStorage[arrayScan].readButton = readButton
-    libraryStorage[arrayScan].deleteButton = deleteButton
+    //libraryStorage[arrayScan].readButton = readButton
+    //libraryStorage[arrayScan].deleteButton = deleteButton
 
-    newCellTitle.innerHTML = `${libraryStorage[arrayScan].title}`
-    newCellAuthor.innerHTML = `${libraryStorage[arrayScan].author}`
-    newCellPages.innerHTML = `${libraryStorage[arrayScan].pagesQuantity}`
+    libraryTableHTML[arrayScan].titleHTML.innerHTML = `${libraryStorage[arrayScan].title}`
+    libraryTableHTML[arrayScan].authorHTML.innerHTML = `${libraryStorage[arrayScan].author}`
+    libraryTableHTML[arrayScan].pagesQuantityHTML.innerHTML = `${libraryStorage[arrayScan].pagesQuantity}`
     if(isRead){
-    newCellIsRead.innerHTML = `Read`
+    libraryTableHTML[arrayScan].isReadHTML.innerHTML = `Read`
     }else{
-    newCellIsRead.innerHTML = `Unread`
+        libraryTableHTML[arrayScan].isReadHTML.innerHTML = `Unread`
     }
     
-    tableBody.appendChild(newRow)
-    newRow.appendChild(newCellTitle)
-    newRow.appendChild(newCellAuthor)
-    newRow.appendChild(newCellPages)
-    newRow.appendChild(newCellIsRead)
-    newRow.appendChild(readButton)
-    newRow.appendChild(deleteButton)
+    tableBody.appendChild(libraryTableHTML[arrayScan].rowID)
+    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].titleHTML)
+    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].authorHTML)
+    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].pagesQuantityHTML)
+    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].isReadHTML)
+    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].readButtonHTML)
+    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].deleteButtonHTML)
 
     }
 
@@ -110,13 +125,34 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
         }
     }
 
-    Book.prototype.delete = function(){
-      
+    function markAsRead(row){
+        if(libraryStorage[row].isRead){
+            libraryStorage[row].isRead = false
+            libraryTableHTML[row].isReadHTML.innerHTML = `Unread`
+        }else{
+            libraryStorage[row].isRead = true
+            libraryTableHTML[row].isReadHTML.innerHTML = `Read`
+        }
+
     }
 
-    /*Book.prototype.markAsRead = function(){
-        document.getElementById('readButton').onclick(){
+    function deleteBook(row){
+     libraryStorage.splice(row-1,1)
+     libraryStorage = libraryStorage.filter(Boolean)
+     removeAllChildNodes(libraryTableHTML[row].rowID)
+     libraryTableHTML.splice(row-1,1)
 
+
+    }
+
+    function removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
         }
-        
-    }*/
+    }
+
+    
+
+
+
+    
