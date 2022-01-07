@@ -26,7 +26,7 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton,tit
             
         } else {
             toggleForm.style.display = "none"
-            if(document.forms[0].elements[0].value==""||document.forms[0].elements[1].value =="" || document.forms[0].elements[2].value == ""){
+            if(document.forms[0].elements[0].value==""||document.forms[0].elements[1].value =="" || document.forms[0].elements[2].value == ""|| Number(document.forms[0].elements[2].value) <1){
                 alert("Invalid book!")
             }else if(duplicated(document.forms[0].elements[0].value, document.forms[0].elements[1].value, document.forms[0].elements[2].value)){
                 alert("Book already registered!")
