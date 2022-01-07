@@ -1,28 +1,14 @@
 let libraryStorage = []
-let libraryTableHTML = []
 let toggleForm = document.getElementById("addBookForm")
 let callFormButton = document.getElementById("callFormButton")
 
-function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
+function Book(title, author, pagesQuantity, isRead, readButton, deleteButton,titleHTML, authorHTML, pagesQuantityHTML, isReadHTML, readButtonHTML, deleteButtonHTML, rowID){
     this.title = title
     this.author = author
     this.pagesQuantity = pagesQuantity
     this.isRead = isRead
     this.readButton = readButton
     this.deleteButton = deleteButton
-    this.info = function (){
-        let info
-        if(isRead){
-        info = (title+" by "+author+", "+pagesQuantity+" pages, already read")
-        }else{
-        info = (title+" by "+author+", "+pagesQuantity+" pages, not read yet")
-        }
-        return info
-    }
-
-}
-    
-    function bookHTML(titleHTML, authorHTML, pagesQuantityHTML, isReadHTML, readButtonHTML, deleteButtonHTML, rowID){
     this.titleHTML = titleHTML
     this.authorHTML = authorHTML
     this.pagesQuantityHTML = pagesQuantityHTML 
@@ -30,17 +16,8 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
     this.readButtonHTML = readButtonHTML
     this.deleteButtonHTML = deleteButtonHTML
     this.rowID = rowID
-
-    /*this.readButtonHTML.o = function(){
-        if(this.isReadHTML.innerHTML == `Read`){
-            this.isReadHTML.innerHTML = `Unread`
-        }else{
-            this.isReadHTML.innerHTML = `Read`
-        } 
-    }*/
     }
-    
- 
+     
     function showForm(){
         toggleForm = document.getElementById("addBookForm")
         if (toggleForm.style.display != "block") {
@@ -61,7 +38,6 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
     }
 
     }
-      
     
     function addBookToList(){
       
@@ -74,46 +50,41 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
     let pages = document.forms[0].elements[2].value
     let isRead = document.forms[0].elements[3].checked
     libraryStorage[arrayScan] = new Book(title, author, pages, isRead)
-    libraryTableHTML[arrayScan] = new bookHTML()
     let tableBody = document.getElementById('table').getElementsByTagName('tbody')[0]
-    libraryTableHTML[arrayScan].rowID = document.createElement('tr')
-    libraryTableHTML[arrayScan].titleHTML = document.createElement('td')
-    libraryTableHTML[arrayScan].authorHTML = document.createElement('td')
-    libraryTableHTML[arrayScan].pagesQuantityHTML = document.createElement('td')
-    libraryTableHTML[arrayScan].isReadHTML = document.createElement('td')
-    //let newCellActions = document.createElement('td')
-    libraryTableHTML[arrayScan].deleteButtonHTML = document.createElement('input')
-    libraryTableHTML[arrayScan].deleteButtonHTML.type = 'button'
-    libraryTableHTML[arrayScan].deleteButtonHTML.value = 'Delete'
-    libraryTableHTML[arrayScan].deleteButtonHTML.id = 'deleteButton'  //tagging delete buttons to correctly identify it later
-    libraryTableHTML[arrayScan].deleteButtonHTML.style.backgroundColor = 'red'
-    libraryTableHTML[arrayScan].deleteButtonHTML.onclick = function(){deleteBook(arrayScan)}
+    libraryStorage[arrayScan].rowID = document.createElement('tr')
+    libraryStorage[arrayScan].titleHTML = document.createElement('td')
+    libraryStorage[arrayScan].authorHTML = document.createElement('td')
+    libraryStorage[arrayScan].pagesQuantityHTML = document.createElement('td')
+    libraryStorage[arrayScan].isReadHTML = document.createElement('td')
+    libraryStorage[arrayScan].deleteButtonHTML = document.createElement('input')
+    libraryStorage[arrayScan].deleteButtonHTML.type = 'button'
+    libraryStorage[arrayScan].deleteButtonHTML.value = 'Delete'
+    libraryStorage[arrayScan].deleteButtonHTML.id = 'deleteButton' 
+    libraryStorage[arrayScan].deleteButtonHTML.style.backgroundColor = 'red'
+    libraryStorage[arrayScan].deleteButtonHTML.addEventListener('click', function(){ deleteBook(event,arrayScan)}) 
 
-    libraryTableHTML[arrayScan].readButtonHTML = document.createElement('input')
-    libraryTableHTML[arrayScan].readButtonHTML.type = 'button'
-    libraryTableHTML[arrayScan].readButtonHTML.value = 'Read/Unread'
-    libraryTableHTML[arrayScan].readButtonHTML.id = 'readButton' //tagging read buttons to correctly identify it later
-    libraryTableHTML[arrayScan].readButtonHTML.onclick= function() {markAsRead(arrayScan)}
+    libraryStorage[arrayScan].readButtonHTML = document.createElement('input')
+    libraryStorage[arrayScan].readButtonHTML.type = 'button'
+    libraryStorage[arrayScan].readButtonHTML.value = 'Read/Unread'
+    libraryStorage[arrayScan].readButtonHTML.id = 'readButton' 
+    libraryStorage[arrayScan].readButtonHTML.addEventListener('click',function() {markAsRead(event)})
     
-    //libraryStorage[arrayScan].readButton = readButton
-    //libraryStorage[arrayScan].deleteButton = deleteButton
-
-    libraryTableHTML[arrayScan].titleHTML.innerHTML = `${libraryStorage[arrayScan].title}`
-    libraryTableHTML[arrayScan].authorHTML.innerHTML = `${libraryStorage[arrayScan].author}`
-    libraryTableHTML[arrayScan].pagesQuantityHTML.innerHTML = `${libraryStorage[arrayScan].pagesQuantity}`
+    libraryStorage[arrayScan].titleHTML.innerHTML = `${libraryStorage[arrayScan].title}`
+    libraryStorage[arrayScan].authorHTML.innerHTML = `${libraryStorage[arrayScan].author}`
+    libraryStorage[arrayScan].pagesQuantityHTML.innerHTML = `${libraryStorage[arrayScan].pagesQuantity}`
     if(isRead){
-    libraryTableHTML[arrayScan].isReadHTML.innerHTML = `Read`
+    libraryStorage[arrayScan].isReadHTML.innerHTML = `Read`
     }else{
-        libraryTableHTML[arrayScan].isReadHTML.innerHTML = `Unread`
+        libraryStorage[arrayScan].isReadHTML.innerHTML = `Unread`
     }
     
-    tableBody.appendChild(libraryTableHTML[arrayScan].rowID)
-    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].titleHTML)
-    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].authorHTML)
-    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].pagesQuantityHTML)
-    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].isReadHTML)
-    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].readButtonHTML)
-    libraryTableHTML[arrayScan].rowID.appendChild(libraryTableHTML[arrayScan].deleteButtonHTML)
+    tableBody.appendChild(libraryStorage[arrayScan].rowID)
+    libraryStorage[arrayScan].rowID.appendChild(libraryStorage[arrayScan].titleHTML)
+    libraryStorage[arrayScan].rowID.appendChild(libraryStorage[arrayScan].authorHTML)
+    libraryStorage[arrayScan].rowID.appendChild(libraryStorage[arrayScan].pagesQuantityHTML)
+    libraryStorage[arrayScan].rowID.appendChild(libraryStorage[arrayScan].isReadHTML)
+    libraryStorage[arrayScan].rowID.appendChild(libraryStorage[arrayScan].readButtonHTML)
+    libraryStorage[arrayScan].rowID.appendChild(libraryStorage[arrayScan].deleteButtonHTML)
 
     }
 
@@ -125,24 +96,21 @@ function Book(title, author, pagesQuantity, isRead, readButton, deleteButton){
         }
     }
 
-    function markAsRead(row){
-        if(libraryStorage[row].isRead){
-            libraryStorage[row].isRead = false
-            libraryTableHTML[row].isReadHTML.innerHTML = `Unread`
-        }else{
-            libraryStorage[row].isRead = true
-            libraryTableHTML[row].isReadHTML.innerHTML = `Read`
-        }
+    function deleteBook(event,row){
+    let tableBody = document.getElementById('table').getElementsByTagName('tbody')[0]
+    {tableBody.removeChild(event.target.parentElement)}
+     libraryStorage.splice(row,1)
 
     }
 
-    function deleteBook(row){
-     libraryStorage.splice(row-1,1)
-     libraryStorage = libraryStorage.filter(Boolean)
-     removeAllChildNodes(libraryTableHTML[row].rowID)
-     libraryTableHTML.splice(row-1,1)
+    function markAsRead(event){
+        if(event.target.parentElement.childNodes[3].innerHTML==`Unread`){
+        event.target.parentElement.childNodes[3].innerHTML = `Read`
+        }else{
+            event.target.parentElement.childNodes[3].innerHTML = `Unread`
 
-
+        }
+   
     }
 
     function removeAllChildNodes(parent) {
